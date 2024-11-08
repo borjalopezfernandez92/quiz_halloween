@@ -1,8 +1,47 @@
 body{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     background-color: rgb(80, 80, 80);
-    color: rgb(255, 231, 186);
+    color: rgb(0, 0, 0);
 }
 
-h1{
+button{
+    margin: 10px;
+}
+
+#test{
+    background-color: white;
+    width: 500px;
+}
+
+#bodyDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: rgb(255, 175, 55);
+    padding: 20px;
+}
+
+#buttonsDivId p{
+    position: fixed;
+    right: 5%;
+    top: 12%;
+}
+
+#buttonsDivId{
+    display:flex;
+    flex-direction: column;
+}
+
+#mainDiv{
+    display: flex;
+    justify-content: center;
+}
+
+h2{
     text-decoration: underline;
 }
+
