@@ -1,4 +1,4 @@
-body{
+body {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -6,16 +6,17 @@ body{
     color: rgb(0, 0, 0);
 }
 
-button{
+button {
     margin: 10px;
 }
 
-#test{
+#test {
     background-color: white;
     width: 500px;
 }
 
-#bodyDiv{
+#bodyDiv,
+#bodyDivQuestions {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,25 +24,121 @@ button{
     width: 100%;
     background-color: rgb(255, 175, 55);
     padding: 20px;
+    height: 150px;
 }
 
-#buttonsDivId p{
+#comienzoDiv:hover {
+    border-style: solid;
+}
+
+#comienzoDiv {
+    color: rgb(243, 243, 243);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 153, 0);
+    width: 200px;
+    height: 50px;
+    border-radius: 5px;
+    font-size: large;
+}
+
+#returnHome {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 15px;
+    left: 15px;
+    width: 100px;
+    height: 30px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+#fetchDivId{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 85px;
+    left: 15px;
+    width: 150px;
+    height: 30px;
+    background-color: rgb(255, 94, 0);
+    border-radius: 5px;
+}
+
+#returnHome:hover, #fetchDivId:hover{
+    border-style: solid;
+}
+
+a {
+    text-decoration: none;
+}
+
+#buttonsDivId p {
     position: fixed;
     right: 5%;
     top: 12%;
 }
 
-#buttonsDivId{
-    display:flex;
+#buttonsDivId {
+    display: flex;
     flex-direction: column;
 }
 
-#mainDiv{
+#mainDiv {
     display: flex;
     justify-content: center;
 }
 
-h2{
-    text-decoration: underline;
+#divShowQuestions{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+    color: white;
 }
 
+h2 {
+    text-decoration: underline;
+    position: absolute;
+    top: 5px;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+div{
+    margin: 5px;
+}
+
+.questionshown{
+    display: flex;
+    padding: 5px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    height: 50px;
+    color:rgb(255, 94, 0);
+}
+
+.shown{
+    display: flex;
+    text-align: center;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: rgb(255, 94, 0);
+    height: 50px;
+}
+
+.questionshown:hover, .shown:hover{
+    border-style: solid;
+}
