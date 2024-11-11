@@ -139,6 +139,6 @@ div{
     height: 50px;
 }
 
-.questionshown:hover, .shown:hover{
+.shown:hover{
     border-style: solid;
 }
