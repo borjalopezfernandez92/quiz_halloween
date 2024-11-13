@@ -24,11 +24,31 @@ button {
     width: 100%;
     background-color: rgb(255, 175, 55);
     padding: 20px;
-    height: 150px;
+    height: 200px;
 }
 
-#comienzoDiv:hover {
-    border-style: solid;
+#bodyDivResults{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: rgb(255, 175, 55);
+    padding: 20px;
+    height: 50px;
+}
+
+.botonesIndex{
+    color: rgb(243, 243, 243);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(255, 153, 0);
+    width: 200px;
+    height: 50px;
+    border-radius: 5px;
+    font-size: large;
 }
 
 #comienzoDiv {
@@ -36,12 +56,17 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(255, 153, 0);
+    flex-direction: column;
     width: 200px;
     height: 50px;
     border-radius: 5px;
     font-size: large;
 }
+
+.botonesIndex:hover{
+    border-style: solid;
+}
+
 
 #returnHome {
     position: absolute;
@@ -50,9 +75,9 @@ button {
     align-items: center;
     top: 15px;
     left: 15px;
-    width: 100px;
+    width: 150px;
     height: 30px;
-    background-color: white;
+    background-color: rgb(255, 208, 137);
     border-radius: 5px;
 }
 
@@ -61,12 +86,29 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 85px;
+    top: 145px;
     left: 15px;
     width: 150px;
     height: 30px;
     background-color: rgb(255, 94, 0);
     border-radius: 5px;
+}
+
+#score{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-left: 50px;
+    color: rgb(255, 94, 0);
+    background-color: rgb(255, 208, 137);
+    border-radius: 5px;
+    font-size: 50px;
+}
+
+#score p{
+    margin: 10px;
 }
 
 #returnHome:hover, #fetchDivId:hover{
@@ -75,6 +117,7 @@ button {
 
 a {
     text-decoration: none;
+    margin: 10px;
 }
 
 #buttonsDivId p {
@@ -141,4 +184,30 @@ div{
 
 .shown:hover{
     border-style: solid;
+}
+
+.wrong{
+    display: flex;
+    text-align: center;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: red;
+    height: 50px;
+}
+
+.correct{
+    display: flex;
+    text-align: center;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: rgb(0, 255, 191);
+    height: 50px;
+}
+
+.stopClick {
+    pointer-events: none;
 }

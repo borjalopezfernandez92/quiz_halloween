@@ -1,22 +1,34 @@
 // Decodificar html << buscar para solucionar formato de comilla
 
+let nPregunta = 0; // Número de la pregunta actual inicializada a 0.
+let nAciertos = 0; // Número de preguntas acertadas.
+let nFallos = 0; // Número de preguntas falladas.
 (function () {
     localStorage.clear();
 })();
 
-createFetch();
+createFetch(); // Inicialización del pintado del botón de comienzo "primera pregunta"
 
-
-function paintResults() {
-    console.log("test paintResults");
-}
 
 function createFetch() { // Pinta el botón que llamará al fetch
     let getPreguntasDiv = document.getElementById("preguntasDiv");
     let getBodyDiv = document.getElementById("bodyDivQuestions");
     let fetchDiv = document.createElement("div");
+    let scoreDiv = document.createElement("div");
+    scoreDiv.id = "score";
+    let aciertosNode = document.createElement("p");
+    aciertosNode.id = "aciertosId";
+    aciertosNode.innerText = "Aciertos "+nAciertos;
+    let fallosNode = document.createElement("p");
+    fallosNode.id ="fallosId";
+    fallosNode.innerText = "Fallos "+nFallos;
+
+    scoreDiv.appendChild(aciertosNode);
+    scoreDiv.appendChild(fallosNode);
+
     fetchDiv.id = "fetchDivId";
     getPreguntasDiv.appendChild(fetchDiv);
+    getPreguntasDiv.appendChild(scoreDiv);
     getBodyDiv.appendChild(getPreguntasDiv);
 
     fetchDiv.setAttribute("onclick", "fetchQuestion(0)");
@@ -24,21 +36,21 @@ function createFetch() { // Pinta el botón que llamará al fetch
 
 }
 
-function fetchQuestion() { // realiza el fetch
+function fetchQuestion() { // Realizo el fetch
     let getPrimeraPreguntaDiv = document.getElementById("fetchDivId");
     getPrimeraPreguntaDiv.className = "hidden";
     fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple")
         .then(datos => datos.json())
-        .then(json => checkFetch(json, 0));
+        .then(json => checkFetch(json, nPregunta));
 }
 
 
-function checkFetch(fetch, vuelta) {
+function checkFetch(fetch, vuelta) { // Cojo los datos que necesito del fetch y los distribullo dependiendo de la pregunta que sea (vuelta)
     let getBodyDivQuestions = document.createElement("div");
     getBodyDivQuestions.id = "hiddenDiv";
 
-
-    for (let i = 0; i < fetch.results.length; i++) {
+    for (let i = 0; i < fetch.results.length; i++) { // Escribo las preguntas y opciones en localStorage
+        // Pintado de preguntas
         let pregunta = fetch.results[i].question;
         localStorage.setItem(`pregunta${i}`, pregunta);
 
@@ -46,26 +58,24 @@ function checkFetch(fetch, vuelta) {
         let wrongOptions = fetch.results[i].incorrect_answers;
         manageOptions(wrongOptions, i);
 
-
         // Pintado de opciones correctas
         let correctAnswer = fetch.results[i].correct_answer;
         localStorage.setItem(`vuelta${vuelta}Opcion3`, correctAnswer);
         vuelta++;
     }
-    // manageQuestions();
-    paintQuestion(0);
+    paintQuestion(nPregunta);
 }
 
-function manageOptions(options, vuelta) {
+function manageOptions(options, vuelta) { // Al estar las opciones erróneas en un array, tengo una función que las escribe en el localstorage.
     for (let i = 0; i < options.length; i++) {
         let opcion = options[i];
         localStorage.setItem(`vuelta${vuelta}Opcion${i}`, opcion);
     }
 }
 
-function paintQuestion(nPregunta) {
+function paintQuestion(nPregunta) { // Función que pinta para el usuario la pregunta y las opciones correspondientes a la pregunta que toque, de lo cual lleva la cuenta "nPregunta".
     let cleaner = document.getElementById("divShown");
-
+    cleaner.classList.remove("stopClick");
     if (cleaner) {
         cleaner.innerHTML = "";
     }
@@ -84,11 +94,6 @@ function paintQuestion(nPregunta) {
     let getOpcion2 = localStorage.getItem(`vuelta${nPregunta}Opcion2`);
     let getCorrect = localStorage.getItem(`vuelta${nPregunta}Opcion3`);
 
-    console.log(getOpcion0,
-        getOpcion1,
-        getOpcion2,
-        getCorrect)
-
     localStorage.setItem("check", getCorrect);
     let arrayOpciones = [getOpcion0, getOpcion1, getOpcion2, getCorrect];
     arrayOpciones.sort(() => Math.random() - 0.5);
@@ -99,19 +104,48 @@ function paintQuestion(nPregunta) {
         opcion.className = "shown";
         opcion.innerText = arrayOpciones[i];
         let checker = arrayOpciones[i];
-        opcion.setAttribute(`onClick`, `checkCorrect("${checker}")`);
+        opcion.setAttribute(`onClick`, `checkCorrect("${checker}","${opcion.id}")`);
         divPreguntas.appendChild(opcion);
     }
-    nPregunta++;
+}
+function checkCorrect(opcionEscogida, pEscogido) {              // Comprueba si la opción escogida es la correcta o no y avisa al usuario con cambios en el color de las opciones
+    let checker = localStorage.getItem("check");
+    if (nPregunta >= 2){
+        let getDiv = document.getElementById("divShown");
+        getDiv.innerHTML = "";
+        let finish = document.createElement("p");
+        finish.innerText = "Fin del quiz";
+        finish.className = "questionshown";
+        document.body.appendChild(finish);
+        setTimeout(() => {
+            reset();
+        }, "3000");
+    }
+
+    if (checker != opcionEscogida) {
+        nFallos++;
+        let updateFallos = document.getElementById("fallosId");
+        updateFallos.innerText = "Fallos "+nFallos;
+        let getPtoChange = document.getElementById(pEscogido);
+        getPtoChange.className = "wrong";
+        getPtoChange.classList.add("stopClick");
+    } else {
+        nAciertos++;
+        nPregunta++;
+        let updateAciertos = document.getElementById("aciertosId");
+        updateAciertos.innerText = "Aciertos "+nAciertos;
+        let getPtoChange = document.getElementById(pEscogido);
+        getPtoChange.className = "correct";
+        let getDiv = document.getElementById("divShown");
+        getDiv.classList.add("stopClick");
+        getPtoChange.classList.add("stopClick");
+
+        setTimeout(() => {                                      // Esperamos mostrándole al usuario que esa era la opción correcta antes de pasar a la siguiente pregunta.
+            paintQuestion(nPregunta);
+          }, "1000");
+    }
 }
 
-
-function checkCorrect(opcionEscogida) {
-    let checker = localStorage.getItem("check");
-    if (checker != opcionEscogida) {
-        console.log("Respuesta incorrecta");
-    } else {
-        console.log("Respuesta correcta!");
-        paintQuestion();
-    }
+function reset() {
+    window.location.href = 'index.html';
 }
