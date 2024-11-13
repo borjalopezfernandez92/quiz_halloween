@@ -110,7 +110,7 @@ function paintQuestion(nPregunta) { // Función que pinta para el usuario la pre
 }
 function checkCorrect(opcionEscogida, pEscogido) {              // Comprueba si la opción escogida es la correcta o no y avisa al usuario con cambios en el color de las opciones
     let checker = localStorage.getItem("check");
-    if (nPregunta >= 2){
+    if (nPregunta >= 10){
         let getDiv = document.getElementById("divShown");
         getDiv.innerHTML = "";
         let finish = document.createElement("p");
