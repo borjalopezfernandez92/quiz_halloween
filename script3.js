@@ -53,7 +53,7 @@ function checkFetch(fetch, vuelta) { // Cojo los datos que necesito del fetch y 
         // Pintado de preguntas
         let arrayQuestion = [];
         let pregunta = fetch.results[i].question;
-        arrayQuestion.push(pregunta);
+        arrayQuestion.push("opcion1"+pregunta);
         // Pintado de opciones incorrectas
         let wrongOptions = fetch.results[i].incorrect_answers;
         // manageOptions(wrongOptions, i);
