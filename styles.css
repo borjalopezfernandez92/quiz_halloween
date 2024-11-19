@@ -20,6 +20,7 @@ canvas{
     width: 600px !important;
     height: 600px !important;
     background-color: aliceblue;
+    border-radius: 10px;
 }
 
 #test {
