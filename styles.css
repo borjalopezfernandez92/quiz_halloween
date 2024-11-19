@@ -10,6 +10,18 @@ button {
     margin: 10px;
 }
 
+#chartContainer{
+    display: flex;
+    justify-content: center;
+}
+
+canvas{
+    color: white !important;
+    width: 600px !important;
+    height: 600px !important;
+    background-color: aliceblue;
+}
+
 #test {
     background-color: white;
     width: 500px;

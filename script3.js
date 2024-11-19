@@ -41,93 +41,91 @@ function fetchQuestion() { // Realizo el fetch
     getPrimeraPreguntaDiv.className = "hidden";
     fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple")
         .then(datos => datos.json())
-        .then(json => checkFetch(json, nPregunta));
+        .then(json => checkFetch(json));
 }
 
 
-function checkFetch(fetch, vuelta) { // Cojo los datos que necesito del fetch y los distribullo dependiendo de la pregunta que sea (vuelta)
+function checkFetch(fetch) { // Cojo los datos que necesito del fetch y los distribullo
     let getBodyDivQuestions = document.createElement("div");
     getBodyDivQuestions.id = "hiddenDiv";
 
     for (let i = 0; i < fetch.results.length; i++) { // Escribo las preguntas y opciones en localStorage
-        // Pintado de preguntas
-        let arrayQuestion = [];
-        let pregunta = fetch.results[i].question;
-        arrayQuestion.push("opcion1"+pregunta);
-        // Pintado de opciones incorrectas
-        let wrongOptions = fetch.results[i].incorrect_answers;
-        // manageOptions(wrongOptions, i);
+        let arrayQuestion = [];        // array que contiene la pregunta y las respuestas.
 
-        // Pintado de opciones correctas
-        let correctAnswer = fetch.results[i].correct_answer;
-        arrayQuestion.push(correctAnswer);
+        let pregunta = fetch.results[i].question;        // Pintado de preguntas
+        arrayQuestion.push(pregunta);
 
+        let wrongOptions = fetch.results[i].incorrect_answers;        // Pintado de opciones incorrectas
         for (let i = 0; i < wrongOptions.length; i++) {
             let wrong_option = wrongOptions[i];
             arrayQuestion.push(wrong_option);
         }
-        // localStorage.setItem(`pregunta${i}`, `Opcion3` : `${correctAnswer}`);
-        localStorage.setItem(`pregunta${i}`, arrayQuestion); // AQUI
-        vuelta++;
+        let correctAnswer = fetch.results[i].correct_answer;        // Pintado de opciones correctas
+        arrayQuestion.push(correctAnswer);
+
+        // JSON.stringify(arrayQuestion);
+
+        localStorage.setItem(`pregunta${i}`, JSON.stringify({
+            pregunta: `${arrayQuestion[0]}`,
+            opcion0: `${arrayQuestion[1]}`,
+            opcion1: `${arrayQuestion[2]}`,
+            opcion2: `${arrayQuestion[3]}`,
+            opcion3: `${arrayQuestion[4]}`,
+        }));
     }
     paintQuestion(nPregunta);
 }
 
-// function manageOptions(options, vuelta) { // Al estar las opciones erróneas en un array, tengo una función que las escribe en el localstorage.
-//     for (let i = 0; i < options.length; i++) {
-//         let opcion = options[i];
-//         localStorage.setItem(`pregunta${i}`, opcion);
-//     }
-// }
-
 function paintQuestion(nPregunta) { // Función que pinta para el usuario la pregunta y las opciones correspondientes a la pregunta que toque, de lo cual lleva la cuenta "nPregunta".
-    let cleaner = document.getElementById("divShown");
-    cleaner.classList.remove("stopClick");
-    if (cleaner) {
-        cleaner.innerHTML = "";
-    }
-
-    let getPregunta = localStorage.getItem(`pregunta${nPregunta}`);
-
-    let divPreguntas = document.getElementById("divShown");
-    let pPregunta = document.createElement("p");
-    pPregunta.innerText = getPregunta;
-    pPregunta.className = "questionshown";
-    divPreguntas.appendChild(pPregunta);
-
-
-    let getOpcion0 = localStorage.getItem(`vuelta${nPregunta}Opcion0`);
-    let getOpcion1 = localStorage.getItem(`vuelta${nPregunta}Opcion1`);
-    let getOpcion2 = localStorage.getItem(`vuelta${nPregunta}Opcion2`);
-    let getCorrect = localStorage.getItem(`vuelta${nPregunta}Opcion3`);
-
-    localStorage.setItem("check", getCorrect);
-    let arrayOpciones = [getOpcion0, getOpcion1, getOpcion2, getCorrect];
-    arrayOpciones.sort(() => Math.random() - 0.5);
-
-    for (let i = 0; i < arrayOpciones.length; i++) {
-        let opcion = document.createElement("p");
-        opcion.id = `opcion${i}`;
-        opcion.className = "shown";
-        opcion.innerText = arrayOpciones[i];
-        let checker = arrayOpciones[i];
-        opcion.setAttribute(`onClick`, `checkCorrect("${checker}","${opcion.id}")`);
-        divPreguntas.appendChild(opcion);
-    }
-}
-function checkCorrect(opcionEscogida, pEscogido) {              // Comprueba si la opción escogida es la correcta o no y avisa al usuario con cambios en el color de las opciones
-    let checker = localStorage.getItem("check");
     if (nPregunta >= 10){
         let getDiv = document.getElementById("divShown");
         getDiv.innerHTML = "";
+        getDiv.classList.add("stopClick");
         let finish = document.createElement("p");
-        finish.innerText = "Fin del quiz";
+        finish.innerText = "Fin del quiz, volviendo al inicio...";
         finish.className = "questionshown";
         document.body.appendChild(finish);
-        setTimeout(() => {
-            reset();
-        }, "3000");
+        toIndex();
+    } else {
+        let cleaner = document.getElementById("divShown"); // Elimina la clase stopClick para que el usuario pueda volver a escoger la respuesta que quiera.
+        cleaner.classList.remove("stopClick");
+        if (cleaner) {
+            cleaner.innerHTML = "";
+        }
+    
+        let getPregunta = JSON.parse(localStorage.getItem(`pregunta${nPregunta}`));
+    
+        let divPreguntas = document.getElementById("divShown");
+        let pPregunta = document.createElement("p");
+        pPregunta.innerHTML = getPregunta.pregunta;
+        pPregunta.className = "questionshown";
+        divPreguntas.appendChild(pPregunta);
+    
+        let getOpcion0 = getPregunta.opcion0;
+        let getOpcion1 = getPregunta.opcion1;
+        let getOpcion2 = getPregunta.opcion2;
+        let getCorrect = getPregunta.opcion3;
+    
+    
+        localStorage.setItem("check", getCorrect);
+        let arrayOpciones = [getOpcion0, getOpcion1, getOpcion2, getCorrect];
+        arrayOpciones.sort(() => Math.random() - 0.5);
+    
+        for (let i = 0; i < arrayOpciones.length; i++) {
+            let opcion = document.createElement("p");
+            opcion.id = `opcion${i}`;
+            opcion.className = "shown";
+            opcion.innerHTML = arrayOpciones[i];
+            let checker = arrayOpciones[i];
+            opcion.setAttribute(`onClick`, `checkCorrect("${checker}","${opcion.id}")`);
+            divPreguntas.appendChild(opcion);
+        }
     }
+
+
+}
+function checkCorrect(opcionEscogida, pEscogido) {              // Comprueba si la opción escogida es la correcta o no y avisa al usuario con cambios en el color de las opciones
+    let checker = localStorage.getItem("check");
 
     if (checker != opcionEscogida) {
         nFallos++;
@@ -153,6 +151,14 @@ function checkCorrect(opcionEscogida, pEscogido) {              // Comprueba si 
     }
 }
 
-function reset() {
-    window.location.href = 'index.html';
-}
+function toIndex() {
+    // console.log("fallos: "+nFallos);
+    // console.log("aciertos: "+nAciertos);
+    localStorage.setItem(`resultados`, JSON.stringify({
+        aciertos: `${nAciertos}`,
+        fallos: `${nFallos}`
+    }));
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, "3000");
+};
