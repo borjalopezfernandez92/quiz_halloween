@@ -17,3 +17,6 @@
 
     ### alfa.js y beta.js
     - Diseñé la aplicación de maneras más "feas" antes de llegar a la versión actual, pero al funcionar decidí dejarlo como documentación del proceso.
+
+    ### Diseño/Planteamiento
+    - En lugar de pasar a la siguiente pregunta cuando el usuario escoge una respuesta sea correcta o incorrecta, solo pasará a la siguiente cuando se acierte la pregunta. Lo planteo como quiz orientado al aprendizaje, ya que cada pregunta te fuerza a encontrar la respuesta correcta, teniendo la dificultad de intentar acertar todas las preguntas a la primera.
